@@ -1,5 +1,7 @@
 # Solar Adoption in the United States Wastewater Sector
 
+[![CI](https://github.com/Yer1k/solar_wastewater/actions/workflows/main.yml/badge.svg)](https://github.com/Yer1k/solar_wastewater/actions/workflows/main.yml)
+
 #### Project Mentors: [Dr. Kyle Bradbury](https://energy.duke.edu/about/staff/kyle-bradbury), [Dr. Christine Kirchhoff](https://iee.psu.edu/people/christine-j-kirchhoff)
 #### Project Members: [Pooja Kabber](https://github.com/anushakabber), [Sukhpreet Sahota](https://github.com/5ukhy21), [Dingkun Yang](https://github.com/Yer1k), [Yuanjing Zhu](https://github.com/YZhu0225)
 
