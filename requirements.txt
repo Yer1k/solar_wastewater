@@ -1,0 +1,10 @@
+pytest
+pylint
+ipython
+
+numpy
+pandas
+matplotlib
+
+overpy
+folium
