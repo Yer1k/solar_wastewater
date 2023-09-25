@@ -8,3 +8,7 @@ matplotlib
 
 overpy
 folium
+geopandas 
+requests 
+earthengine-api==0.1.329
+pyproj
