@@ -12,3 +12,5 @@ geopandas
 requests 
 earthengine-api==0.1.329
 pyproj
+rasterio
+geetools
