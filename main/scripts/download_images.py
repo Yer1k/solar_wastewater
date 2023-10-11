@@ -5,6 +5,7 @@ from shapely.geometry import Polygon, box
 import os
 import geemap
 import json
+import multiprocessing
 
 api = overpy.Overpass()
 
@@ -61,38 +62,45 @@ def convert_geodf(plants):
 def download_images(df):
 
     # downloaded_directory = settings["download_folder_path"]
-    downloaded_directory = "downloaded_images"
+    downloaded_directory = "/content/drive/MyDrive/wwtp_images"
     if not os.path.exists(downloaded_directory):
         os.mkdir(downloaded_directory)
 
-    for idx, row in df[:2].iterrows():
+    for idx, row in df.iterrows():
 
-        length = 0.01
-        height = 0.01
-        center_x = row.centroid.x
-        center_y = row.centroid.y
+        filename = os.path.join(downloaded_directory, f"{row['WWTP_name']}.tif")
 
-        large_polygon = ee.Geometry.Polygon([(center_x+length, center_y+height), (center_x+length, center_y-height), 
-        (center_x-length, center_y-height), (center_x-length, center_y+height)])
+        if not os.path.exists(filename):
 
-        feature = ee.Feature(large_polygon, {})
+            length = 0.01
+            height = 0.01
+            center_x = row.centroid.x
+            center_y = row.centroid.y
 
-        collection = (
-            ee.ImageCollection("USDA/NAIP/DOQQ")
-            .filterDate("2018-01-01", "2019-01-01")
-            .select(['R', 'G', 'B'])
-        )
+            large_polygon = ee.Geometry.Polygon([(center_x+length, center_y+height), (center_x+length, center_y-height), 
+            (center_x-length, center_y-height), (center_x-length, center_y+height)])
 
-        image = ee.Image(collection.mosaic())
+            feature = ee.Feature(large_polygon, {})
 
-        roi = feature.geometry()
+            collection = (
+                ee.ImageCollection("USDA/NAIP/DOQQ")
+                .filterDate("2018-01-01", "2019-01-01")
+                .select(['R', 'G', 'B'])
+            )
 
-        filename = os.path.join(downloaded_directory, f"{df.iloc[idx]['WWTP_name']}.tif")
+            image = ee.Image(collection.mosaic())
 
-        image = image.clip(roi).unmask()
-        geemap.ee_export_image(
-            image, filename=filename, scale=1, region=roi, file_per_band=False
-        )
+            roi = feature.geometry()
+
+            image = image.clip(roi).unmask()
+            geemap.ee_export_image(
+                image, filename=filename, scale=1, region=roi, file_per_band=False
+            )
+
+def write_data_to_csv(df):
+
+    # df.to_csv("../data/wwtps.csv")
+    df.to_csv("/content/wwtps.csv")
 
 def main():
 
@@ -102,7 +110,24 @@ def main():
     osm_data = get_osm_data()
     geodf = convert_geodf(osm_data)
 
-    download_images(geodf)
+    write_data_to_csv(geodf)
+
+    p1 = multiprocessing.Process(target=download_images, args=(geodf[:100], )) 
+    p2 = multiprocessing.Process(target=download_images, args=(geodf[100:200], )) 
+    p3 = multiprocessing.Process(target=download_images, args=(geodf[200:300], ))
+    p4 = multiprocessing.Process(target=download_images, args=(geodf[300:400], ))
+
+    p1.start() 
+    p2.start() 
+    p3.start()
+    p4.start()
+
+    p1.join() 
+    p2.join()
+    p3.join()
+    p4.join()
+
+    # download_images(geodf)
 
 if __name__ == "__main__":
     main()
