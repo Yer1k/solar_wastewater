@@ -4,15 +4,20 @@ import ee
 from shapely.geometry import Polygon, box
 import os
 import geemap
+import json
 
 api = overpy.Overpass()
 
 # TO DO: Include nodes and relations
 # TO DO: Remove duplicates
 
-# TO DO: Change authentication method
-# TO DO: Change path to drive
-# TO DO: See what can be in a settings file
+def load_settings():
+
+    global settings
+
+    f = open('settings.json')
+    settings = json.load(f)
+    f.close()
 
 def get_osm_data():
 
@@ -49,11 +54,13 @@ def convert_geodf(plants):
 
     geoms = [Polygon(plants[key]) for key in plants]
     df = gpd.GeoDataFrame({'WWTP_name': list(plants.keys()), 'geometry': geoms}, crs="EPSG:4326")
+    df["centroid"] = df.to_crs('+proj=cea').centroid.to_crs(epsg=4326)
 
     return df
 
 def download_images(df):
 
+    # downloaded_directory = settings["download_folder_path"]
     downloaded_directory = "downloaded_images"
     if not os.path.exists(downloaded_directory):
         os.mkdir(downloaded_directory)
@@ -80,7 +87,7 @@ def download_images(df):
 
         roi = feature.geometry()
 
-        filename = os.path.join(downloaded_directory, f"image.tif")
+        filename = os.path.join(downloaded_directory, f"{df.iloc[idx]['WWTP_name']}.tif")
 
         image = image.clip(roi).unmask()
         geemap.ee_export_image(
@@ -88,6 +95,9 @@ def download_images(df):
         )
 
 def main():
+
+    # load_settings()
+    ee.Initialize()
 
     osm_data = get_osm_data()
     geodf = convert_geodf(osm_data)
