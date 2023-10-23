@@ -1,5 +1,6 @@
-# Ignore the img
+# Ignore the img and tif
 *.jpg
+*.tif
 
 # Ignore Mac system files
 .DS_Store
