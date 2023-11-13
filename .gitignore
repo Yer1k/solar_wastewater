@@ -1,5 +1,5 @@
-# ignore FRS_Wastewater folder
-00_source_data/FRS_Wastewater/
+# ignore 000_source_data folder
+00_source_data/
 
 # Ignore the img and tif
 *.jpg
