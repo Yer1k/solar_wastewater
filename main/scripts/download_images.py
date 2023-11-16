@@ -24,7 +24,7 @@ def get_osm_data():
 
     # Fetch all wastewater treatment plants within California's boundary
     query = f"""
-        area[admin_level=4]["name"="California"]->.searchArea;
+        area[admin_level=4]["name"="Texas"]->.searchArea;
         (
         way["man_made"="wastewater_plant"](area.searchArea);
         );
@@ -62,7 +62,7 @@ def convert_geodf(plants):
 def download_images(df):
 
     # downloaded_directory = settings["download_folder_path"]
-    downloaded_directory = "/content/drive/MyDrive/wwtp_images"
+    downloaded_directory = "/content/drive/MyDrive/wwtp_images/texas/"
     if not os.path.exists(downloaded_directory):
         os.mkdir(downloaded_directory)
 
@@ -112,10 +112,10 @@ def main():
 
     write_data_to_csv(geodf)
 
-    p1 = multiprocessing.Process(target=download_images, args=(geodf[:100], )) 
-    p2 = multiprocessing.Process(target=download_images, args=(geodf[100:200], )) 
-    p3 = multiprocessing.Process(target=download_images, args=(geodf[200:300], ))
-    p4 = multiprocessing.Process(target=download_images, args=(geodf[300:400], ))
+    p1 = multiprocessing.Process(target=download_images, args=(geodf[1600:2000], )) 
+    p2 = multiprocessing.Process(target=download_images, args=(geodf[2000:2400], )) 
+    p3 = multiprocessing.Process(target=download_images, args=(geodf[2400:2800], ))
+    p4 = multiprocessing.Process(target=download_images, args=(geodf[2800:], ))
 
     p1.start() 
     p2.start() 
