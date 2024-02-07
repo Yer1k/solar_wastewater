@@ -1,3 +1,6 @@
+# ignore venv
+geo_venv/
+
 # ignore 000_source_data folder
 00_source_data/
 
