@@ -1,3 +1,16 @@
+# ignore venv
+geo_venv/
+
+# ignore 000_source_data folder
+00_source_data/
+
+# Ignore the img and tif
+*.jpg
+*.tif
+
+# Ignore Mac system files
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,0 +1,16 @@
+pytest
+pylint
+ipython
+
+numpy
+pandas
+matplotlib
+
+overpy
+folium
+geopandas 
+requests 
+earthengine-api==0.1.329
+pyproj
+rasterio
+geetools
