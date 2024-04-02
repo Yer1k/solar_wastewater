@@ -3,6 +3,7 @@ import geopandas as gpd
 import numpy as np
 from shapely.geometry import Point
 import matplotlib.pyplot as plt
+import seaborn as sns
 import ast
 from scipy.spatial import cKDTree
 from geopy.distance import geodesic
@@ -169,6 +170,80 @@ def read_osm_data(osm_path):
     return df_osm
 
 
+def osm2gdf(osm_path):
+    """
+    Read manually tagged OSM data and return a geodataframe
+
+    Input:
+    - osm_path: path to the OSM data file
+
+    Output:
+    - gdf_osm: geodataframe of the OSM data
+
+    """
+
+    df_osm = read_osm_data(osm_path)
+    gdf_osm = gpd.GeoDataFrame(
+        df_osm,
+        geometry=gpd.points_from_xy(df_osm.osm_longitude, df_osm.osm_latitude),
+    )
+    gdf_osm.crs = "EPSG:4326"
+    return gdf_osm
+
+
+def read_client_data(client_data_path):
+    """
+    Read client data and return a geodataframe
+
+    Input:
+    - client_data_path: path to the client data file
+
+    Output:
+    - gdf_client: geodataframe of the client data
+
+    """
+
+    df_client = pd.read_excel(client_data_path)
+    df_client = df_client.loc[:, ["FacilityName", "Lat, Long"]]
+    df_client["lat"] = df_client["Lat, Long"].apply(lambda x: float(x.split(",")[0]))
+    df_client["lon"] = df_client["Lat, Long"].apply(lambda x: float(x.split(",")[1]))
+    df_client.drop(columns=["Lat, Long"], inplace=True)
+
+    # convert to geodataframe
+    gdf_client = gpd.GeoDataFrame(
+        df_client, geometry=gpd.points_from_xy(df_client.lon, df_client.lat)
+    )
+    gdf_client.crs = "epsg:4326"
+    return gdf_client
+
+
+def interactive_map(df):
+    """
+    Create an interactive map with the given dataframe
+
+    Input:
+    - df: dataframe with osm data
+
+    Output:
+    - m: interactive map with the given data
+    """
+    import folium
+    from folium.plugins import MarkerCluster
+    from folium.plugins import FastMarkerCluster
+
+    # Create a map
+    m = folium.Map(zoom_start=6)
+
+    # Add points to the map
+    mc = MarkerCluster()
+    for idx, row in df.iterrows():
+        mc.add_child(
+            folium.Marker(location=[row["osm_latitude"], row["osm_longitude"]])
+        )
+    m.add_child(mc)
+    return m
+
+
 def plt_world_map(gdf, us_boundary, color, title):
     """
     Plot the WWTP data on a world map
@@ -195,6 +270,20 @@ def plt_world_map(gdf, us_boundary, color, title):
 def statewise_WWTP_count(
     hw_df, target_df, target_df_name, state_name_abbrev_pair, hw_color, target_color
 ):
+    """
+    Calculate the number of WWTPs in each state from HydroWASTE and the target dataset, and plot the results
+
+    Input:
+    - hw_df: dataframe with HydroWASTE data
+    - target_df: dataframe with the target data
+    - target_df_name: name of the target dataset
+    - state_name_abbrev_pair: dictionary that maps state names to state abbreviations
+    - hw_color: color of the HydroWASTE data
+    - target_color: color of the target data
+
+    Output:
+    - sorted_wwtp_num: dataframe with the number of WWTPs in each state from HydroWASTE and the target dataset
+    """
     WWTP_num = pd.DataFrame()
     for state_, state in state_name_abbrev_pair.items():
         hw_num = len(hw_df[hw_df["state"] == state_])
@@ -381,3 +470,168 @@ def statewise_closest_points(state_name, state_name_abbrev_pair, epa, hw):
         hw_subset[hw_subset["distance"] < 1].shape[0],
     ]
     return hw_subset, summary_list
+
+
+def state_county_boundary(state_name):
+    """
+    Retreive the boundary of the state and counties in the state
+
+    Input:
+    - state_name: name of the state
+
+    Output:
+    - state_boundary: boundary of the state
+    - counties_boundary: boundary of the counties in the state
+    """
+    # URLs to shapefiles
+    url_state = "https://www2.census.gov/geo/tiger/GENZ2021/shp/cb_2021_us_state_5m.zip"
+    url_counties = (
+        "https://www2.census.gov/geo/tiger/GENZ2021/shp/cb_2021_us_county_5m.zip"
+    )
+
+    # Load data
+    all_states = gpd.read_file(url_state)
+    all_counties = gpd.read_file(url_counties)
+
+    if state_name == "California":
+        state_boundary = all_states[all_states["STUSPS"] == "CA"]
+        counties_boundary = all_counties[all_counties["STATEFP"] == "06"]
+
+    elif state_name == "Texas":
+        state_boundary = all_states[all_states["STUSPS"] == "TX"]
+        counties_boundary = all_counties[all_counties["STATEFP"] == "48"]
+
+    state_boundary.to_crs(epsg=4326, inplace=True)
+    counties_boundary.to_crs(epsg=4326, inplace=True)
+    return state_boundary, counties_boundary
+
+
+def merge_income_pop_boundary(state_boundary_path, income_path, pop_path, state_name):
+    """
+    Merge the income and population data with the state boundary data
+
+    Input:
+    - state_boundary_path: path to the state boundary shapefile
+    - income_path: path to the income data
+    - pop_path: path to the population data
+    - state_name: name of the state
+
+    Output:
+    - gdf_MCD_pop_income: geodataframe with the merged data
+    """
+    gdf_mcd = gpd.read_file(state_boundary_path)
+    gdf_mcd = gdf_mcd.to_crs(epsg=4326)
+
+    pop = pd.read_csv(pop_path)
+    pop = pop.transpose()
+    pop = pop.reset_index()
+    pop = pop.iloc[1:]
+    pop.columns = ["Name", "population"]
+    pop.fillna(0, inplace=True)
+    pop.loc[:, "Name"] = pop.loc[:, "Name"].str.split(",").str[0]
+    pop.loc[:, "population"] = pop.loc[:, "population"].str.replace(",", "")
+    pop["population"] = (
+        pd.to_numeric(pop["population"], errors="coerce").fillna(0).astype(int)
+    )
+
+    income = pd.read_csv(income_path)
+    income = income.transpose()
+    income = income.reset_index()
+    income = income.iloc[1:]
+    income.columns = ["Name", "income"]
+    income.loc[:, "Name"] = income.loc[:, "Name"].str.split(",").str[0]
+    income.income = income.income.str.replace(",", "")
+    income.fillna(0, inplace=True)
+    income.income = income.income.astype(int)
+
+    # merge population and income data
+    pop_income = pd.merge(pop, income, on="Name")
+
+    # merge with gdf_CA_MCD
+    if state_name == "California":
+        gdf_MCD_pop_income = pd.merge(
+            gdf_mcd, pop_income, left_on="NAMELSAD", right_on="Name"
+        )
+    elif state_name == "Texas":
+        pop_income["Name"] = pop_income["Name"].str.split(" ").str[:-1].str.join(" ")
+        gdf_MCD_pop_income = pd.merge(
+            gdf_mcd, pop_income, left_on="CITY_NM", right_on="Name"
+        )
+
+    return gdf_MCD_pop_income
+
+
+def plt_state_socioeconomic_map(
+    merged_gdf, wwtp_gdf, state_boudary, counties_boundary, title, column, cmap
+):
+    """
+    Plot the state socioeconomic data on a map
+
+    Input:
+    - gdf: geodataframe with state socioeconomic data
+    - wwtp_gdf: geodataframe with WWTP locations
+    - state_boudary: geodataframe with state boundary
+    - counties_boundary: geodataframe with county boundary
+    - column: column name of the socioeconomic data
+    - title: title of the plot
+    - cmap: color map
+    """
+
+    # plot the plants in three different markers, the background is the population
+    fig, ax = plt.subplots(figsize=(15, 15))
+    state_boudary.plot(ax=ax, facecolor="none", edgecolor="black")
+    counties_boundary.plot(ax=ax, facecolor="none", edgecolor="dimgrey", linewidth=0.5)
+    merged_gdf.plot(ax=ax, column=column, cmap=cmap, edgecolor="black", linewidth=0.2)
+    wwtp_gdf.plot(
+        ax=ax, marker="s", color="red", markersize=5, label="Verified WWTPs from OSM"
+    )
+
+    # Adjust the legend and color bar
+    sm = plt.cm.ScalarMappable(
+        cmap=cmap,
+        norm=plt.Normalize(
+            vmin=merged_gdf[column].min(), vmax=merged_gdf[column].max()
+        ),
+    )
+    sm._A = []
+    cbar = fig.colorbar(sm, ax=ax, shrink=0.5)  # Adjust the shrink parameter as needed
+    cbar.set_label("Population", rotation=270, labelpad=20)
+
+    # Set title
+    plt.title(title, fontsize=20)
+    plt.axis("off")
+    plt.legend(fontsize=15)
+    plt.show()
+
+
+def pop_income_boxplot(merged_gdf, wwtp_gdf):
+    """
+    Plot boxplots for the number of WWTP vs population and median income
+
+    Input:
+    - merged_gdf: geodataframe with merged data (population and income)
+    - wwtp_gdf: geodataframe with WWTP locations
+
+    Output:
+    - boxplots for the number of WWTP vs population and median income
+    """
+    merged_gdf["counts"] = merged_gdf["geometry"].apply(
+        lambda x: wwtp_gdf.within(x).sum()
+    )
+
+    # Plot setup
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7))
+
+    # Boxplot for counts vs population
+    sns.boxplot(x="counts", y="population", data=merged_gdf, ax=ax1, palette="YlGn")
+    ax1.set_xlabel("Number of WWTP", fontsize=14)
+    ax1.set_ylabel("Population", fontsize=14)
+    ax1.set_title("Number of WWTP vs Population", fontsize=16)
+
+    # Boxplot for counts vs income
+    sns.boxplot(x="counts", y="income", data=merged_gdf, ax=ax2, palette="YlGn")
+    ax2.set_xlabel("Number of WWTP", fontsize=14)
+    ax2.set_ylabel("Median Income", fontsize=14)
+    ax2.set_title("Number of WWTP vs Median Income", fontsize=16)
+
+    plt.show()
