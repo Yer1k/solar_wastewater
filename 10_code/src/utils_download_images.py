@@ -54,6 +54,7 @@ def download_images(df, name, is_osm):
         if not os.path.exists(filename):
 
             # Define padding to add to coordinates to get square area around wwtp
+            # Chosen since most bounding boxes have height and width within 0.02
             length = 0.01
             height = 0.01
 
@@ -75,6 +76,7 @@ def download_images(df, name, is_osm):
             feature = ee.Feature(large_polygon, {})
 
             # Define database to download from, date range and channels
+            # NAIP dataset: https://developers.google.com/earth-engine/datasets/catalog/USDA_NAIP_DOQQ
             collection = (
                 ee.ImageCollection("USDA/NAIP/DOQQ")
                 .filterDate("2010-01-01", "2024-01-01")

@@ -78,6 +78,7 @@ def main():
     Gets data consisting of wwtp names and their bounding box coordinates from OSM and downloads them using google Earth Engine using parallel processing with four processes to speed up the download.
     """
     # Authenticate and initialize earth engine project
+    # How to authenticate: https://developers.google.com/earth-engine/guides/python_install#authentication
     ee.Authenticate()
     ee.Initialize(project='earth-engine-project-400411')
 
