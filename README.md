@@ -6,18 +6,20 @@
 1. [Introduction](#Introduction)  
 2. [Data Sources](#DataSources)   
    2.1 [Data Provided By Client](#ClientData)  
-   2.2 [OpenStreetMap](#OSM)
+   2.2 [OpenStreetMap](#OSM) 
    2.3 [EPA](#EPA)  
    2.4 [HydroWaste](#HydroWaste)
 3. [Methodology](#Methodology)  
    3.1 [Overview](#MethodologyOverview)  
    3.2 [Process Diagram](#ProcessDiagram)
-4. [Experiments](#Experiments)
-   4.1 [Overview](#ExperimentOverview)
+4. [Models](#Models)
+5. [Experiments](#Experiments) 
+   5.1 [Overview](#ExperimentOverview) 
+   5.2 [Metrics](#Metrics)
+6. [Results](#Results)
 5. [Conclusion](#Conclusion)  
-5. [Model Inference Instructions](#ModelInference)
-6. [Resources](#Resources)  
-7. [Members](#Members)
+7. [Resources](#Resources)  
+8. [Members](#Members)
 
 ## Introduction <a name="Introduction"></a>
 Wastewater treatment plants act as the largest energy consumers for many municipalities across the United States, requiring 30-40% of the total energy accounted for by local governments and accounting for a large portion of the operating costs at wastewater treatment plants. According to the Department of Energy, “across the country, municipal wastewater treatment plants are estimated to consume more than 30 terawatt-hours per year of electricity, which equates to about $2 billion in annual electric costs” (Department of Energy [1]). However, there are efforts to curtail this and decrease operating costs by increasing renewable energy resources at these sites, mostly in the form of solar panels. While there is great optimism about using renewable resources to make wastewater treatment plants more energy-independent, our understanding of the extent and magnitude of current solar energy adoption in these plants remains constrained due to the unavailability of an exhaustive database of wastewater treatment plants and the status of their solar energy usage. This project is conceived to bridge this critical data gap that currently exists by addressing the research question: What is the scope and scale of solar energy adoption at wastewater treatment plants (WWTPs) in the United States, in particular within California and Texas? The answer to this question will enable government officials and researchers, like our client Dr. Christine Kirchoff and her team, to understand energy consumption levels pre- and post-solar adoption, potential energy savings, and identifying future potential candidates for adoption of solar energy.
@@ -74,6 +76,14 @@ Since the number of possible WWTPs from the different sources are too many to ma
 
 <img src="40_docs/figures/methodology.png" width="600" height="300">
 
+## Models <a name="Models"></a>
+
+The model used was ResNet50. ResNet50 is a specific type of convolutional neural network. It provides the option to add more convolutional layers to a CNN, without running into the vanishing gradient problem, using the concept of shortcut connections. A shortcut connection “skips over” some layers, converting a regular network to a residual network. The 50-layer ResNet uses a bottleneck design for the building block. A bottleneck residual block uses 1×1 convolutions, known as a “bottleneck”, which reduces the number of parameters and matrix multiplications. This enables much faster training of each layer.
+
+Below is the architecture of ResNet50:
+
+<img src="40_docs/figures/resnet50.png" width="600" height="300">
+
 ## Experiments <a name="Experiments"></a>
 In this section, we will dive deep into our experimentation process.
 
@@ -81,12 +91,25 @@ In this section, we will dive deep into our experimentation process.
 
 We not only needed to find the best model parameters for our training data but also test if a model trained on California and Texas would perform well for other states. We came up with two stages to our experiments.
 
-Stage 1: Parameter Tuning
-Stage 2: Within Domain vs Cross Domain Performance
+#### Stage 1: Parameter Tuning 
 
-### Models <a name="Models"></a>
+#### Stage 2: Within Domain vs Cross Domain Performance
 
-### Results <a name="Results"></a>
+### Metrics <a name="Metrics"></a>
+
+1. F1 Score: The F1 score is a measure of a model's accuracy that combines the precision and recall scores. It is calculated as the harmonic mean of precision and recall. The relative contribution of precision and recall to the F1 score are equal. 
+The F1 score can range from 0 to 1, with a higher score indicating better model performance.
+
+``` math
+\[
+F_{1}=\frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+\]
+```
+
+2. AUC: The Area Under the Curve (AUC) is the measure of the ability of a binary classifier to distinguish between classes and is used as a summary of the ROC curve.
+The higher the AUC, the better the model’s performance at distinguishing between the positive and negative classes.
+
+## Results <a name="Results"></a>
 
 ## Conclusion <a name="Conclusion"></a>
 
