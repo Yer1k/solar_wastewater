@@ -53,11 +53,11 @@ After merging the four datasets, we had 40,397 possible WWTPs.
 
 Below is a map of the WWTPs with solar provided by the client:
 
-<img src="40_docs/figures/client_data_map.png" width="800" height="600">
+<img src="40_docs/figures/client_data_map.png" width="600" height="500">
 
 Below is a map of the possible WWTPs after mergining all datasets:
 
-<img src="40_docs/figures/three_sources_map.png" width="800" height="600">
+<img src="40_docs/figures/three_sources_map.png" width="600" height="500">
 
 As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
 
@@ -69,7 +69,7 @@ Since the number of possible WWTPs from the different sources are too many to ma
 
 Process Diagram
 
-<img src="40_docs/figures/methodology.png" width="800" height="600">
+<img src="40_docs/figures/methodology.png" width="400" height="300">
 
 ## Experiments <a name="Experiments"></a>
 In this section, we will dive deep into our experimentation process.
