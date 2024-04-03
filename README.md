@@ -43,25 +43,33 @@ Below is an example of images that demonstrate the incorrect tagging from the ab
 
 True WWTP
 
-<img src="40_docs/figures/wwtp_example.png" width="200" height="100">
+<img src="40_docs/figures/wwtp_example.png" width="600" height="400">
 
 Falsely Labeled as WWTP
 
-<img src="40_docs/figures/not_wwtp_example.png" width="200" height="100">
+<img src="40_docs/figures/not_wwtp_example.png" width="600" height="400">
 
 After merging the four datasets, we had 40,397 possible WWTPs.
 
 Below is a map of the WWTPs with solar provided by the client:
 
-<img src="40_docs/figures/client_data_map.png" width="200" height="100">
+<img src="40_docs/figures/client_data_map.png" width="800" height="600">
 
 Below is a map of the possible WWTPs after mergining all datasets:
 
-<img src="40_docs/figures/three_sources_map.png" width="200" height="100">
+<img src="40_docs/figures/three_sources_map.png" width="800" height="600">
 
 As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
 
 ## Methodology <a name="Methodology"></a>
+
+Overview
+
+Since the number of possible WWTPs from the different sources are too many to manually verify for true WWTP and solar presence, we manually verified and tagged the possible WWTPs from all three data sources for California and Texas, as they were of primary importance to our client. We used this as the training dataset for our scene binary classification model and used the trained model to predict presence of WWTP in the images for other states. We obtained 10k WWTPs from the model inference. Once we had a verified list of all WWTPs, we manually verified the presence of solar.
+
+Process Diagram
+
+<img src="40_docs/figures/methodology.png" width="800" height="600">
 
 ## Experiments <a name="Experiments"></a>
 In this section, we will dive deep into our experimentation process.
