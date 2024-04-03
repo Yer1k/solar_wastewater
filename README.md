@@ -4,13 +4,16 @@
 
 ## Table of Contents
 1. [Introduction](#Introduction)  
-2. [Data Sources](#DataSources)  
-   3.1 [Data Provided By Client](#ClientData)
-   3.2 [OpenStreetMap](#OSM)  
-   3.3 [EPA](#EPA)  
-   3.4 [HydroWaste](#HydroWaste)
+2. [Data Sources](#DataSources)   
+   2.1 [Data Provided By Client](#ClientData)  
+   2.2 [OpenStreetMap](#OSM)
+   2.3 [EPA](#EPA)  
+   2.4 [HydroWaste](#HydroWaste)
 3. [Methodology](#Methodology)  
+   3.1 [Overview](#MethodologyOverview)  
+   3.2 [Process Diagram](#ProcessDiagram)
 4. [Experiments](#Experiments)
+   4.1 [Overview](#ExperimentOverview)
 5. [Conclusion](#Conclusion)  
 5. [Model Inference Instructions](#ModelInference)
 6. [Resources](#Resources)  
@@ -53,26 +56,33 @@ After merging the four datasets, we had 40,397 possible WWTPs.
 
 Below is a map of the WWTPs with solar provided by the client:
 
-<img src="40_docs/figures/client_data_map.png" width="600" height="500">
+<img src="40_docs/figures/client_data_map.png" width="500" height="300">
 
 Below is a map of the possible WWTPs after mergining all datasets:
 
-<img src="40_docs/figures/three_sources_map.png" width="600" height="500">
+<img src="40_docs/figures/three_sources_map.png" width="500" height="300">
 
 As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
 
 ## Methodology <a name="Methodology"></a>
 
-Overview
+### Overview <a name="MethodologyOverview"></a>
 
 Since the number of possible WWTPs from the different sources are too many to manually verify for true WWTP and solar presence, we manually verified and tagged the possible WWTPs from all three data sources for California and Texas, as they were of primary importance to our client. We used this as the training dataset for our scene binary classification model and used the trained model to predict presence of WWTP in the images for other states. We obtained 10k WWTPs from the model inference. Once we had a verified list of all WWTPs, we manually verified the presence of solar.
 
-Process Diagram
+### Process Diagram <a name="ProcessDiagram"></a>
 
-<img src="40_docs/figures/methodology.png" width="400" height="300">
+<img src="40_docs/figures/methodology.png" width="600" height="300">
 
 ## Experiments <a name="Experiments"></a>
 In this section, we will dive deep into our experimentation process.
+
+### Overview <a name="ExperimentOverview"></a>
+
+We not only needed to find the best model parameters for our training data but also test if a model trained on California and Texas would perform well for other states. We came up with two stages to our experiments.
+
+Stage 1: Parameter Tuning
+Stage 2: Within Domain vs Cross Domain Performance
 
 ### Models <a name="Models"></a>
 
