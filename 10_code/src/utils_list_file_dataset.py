@@ -3,7 +3,7 @@ import pandas as pd
 
 def list_file_dataset(source_directory):
     """
-    List all files in the train and test dataset
+    List all files in the training and testing dataset
 
     Input:
     - source_directory: str, path to the directory containing the train and test dataset

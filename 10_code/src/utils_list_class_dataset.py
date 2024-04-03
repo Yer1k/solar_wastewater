@@ -2,7 +2,7 @@ import os
 
 def list_class(path):
     """
-    List the number of files in each class directory.
+    List the number of files in each class directory and the class index.
 
     Args:
         path (str): The path to the directory containing the class directories (subdirectories.

@@ -45,21 +45,31 @@ While there is a performance drop when running cross domain, the max F1 scores a
 
 ## src folder
 
-### Tool for deleting png images
-
+### Tools for Model Training
 
 - [utils_model_training_ResNet50.py](./src/utils_model_training_ResNet50.py)
 
     This script is a utility script that contains the functions for the ResNet50 model for scene classification.
+
+- [utils_random_sample_folder.py](./src/utils_random_sample_folder.py)
+
+    This script is used to randomly sample a folder and copy the sampled files to a new folder. 
+
+- [utils_list_class_dataset.py](./src/utils_list_class_dataset.py)
+
+    This script is used to list the number of files in each class directory and the class index.
+
+- [utils_list_file_dataset.py](./src/utils_list_file_dataset.py)
+
+    This script is used to list the number of files in the training and testing dataset folders.
+
+### Tool for deleting png images
 
 - [utils_delete_png.py](./src/utils_delete_png.py) 
 
     This script is used to delete the png images from the dataset folder. The script takes the path to the dataset folder as input and deletes all the png images from the folder. The script is used to delete the png images from the dataset folder before training the model if mass amount of png images are present in the dataset folder.
 
 
-- [utils_random_sample_folder.py](./src/utils_random_sample_folder.py)
-
-    This script is used to randomly sample a folder and copy the sampled files to a new folder. 
 
 
 ## tools folder
