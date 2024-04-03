@@ -12,10 +12,10 @@
 3. [Methodology](#Methodology)  
    3.1 [Overview](#MethodologyOverview)  
    3.2 [Process Diagram](#ProcessDiagram)  
-4. [Models](#Models)
-5. [Experiments](#Experiments) 
+5. [Experiments](#Experiments)  
    5.1 [Overview](#ExperimentOverview)  
-   5.2 [Metrics](#Metrics)  
+   5.2 [Models](#Models)  
+   5.3 [Metrics](#Metrics)  
 6. [Results](#Results)
 5. [Conclusion](#Conclusion)  
 7. [Resources](#Resources)  
@@ -76,14 +76,6 @@ Since the number of possible WWTPs from the different sources are too many to ma
 
 <img src="40_docs/figures/methodology.png" width="600" height="300">
 
-## Models <a name="Models"></a>
-
-The model used was ResNet50. ResNet50 is a specific type of convolutional neural network. It provides the option to add more convolutional layers to a CNN, without running into the vanishing gradient problem, using the concept of shortcut connections. A shortcut connection “skips over” some layers, converting a regular network to a residual network. The 50-layer ResNet uses a bottleneck design for the building block. A bottleneck residual block uses 1×1 convolutions, known as a “bottleneck”, which reduces the number of parameters and matrix multiplications. This enables much faster training of each layer.
-
-Below is the architecture of ResNet50:
-
-<img src="40_docs/figures/resnet50.png" width="700" height="300">
-
 ## Experiments <a name="Experiments"></a>
 In this section, we will dive deep into our experimentation process.
 
@@ -94,6 +86,14 @@ We not only needed to find the best model parameters for our training data but a
 #### Stage 1: Parameter Tuning 
 
 #### Stage 2: Within Domain vs Cross Domain Performance
+
+### Models <a name="Models"></a>
+
+The model used was ResNet50. ResNet50 is a specific type of convolutional neural network. It provides the option to add more convolutional layers to a CNN, without running into the vanishing gradient problem, using the concept of shortcut connections. A shortcut connection “skips over” some layers, converting a regular network to a residual network. The 50-layer ResNet uses a bottleneck design for the building block. A bottleneck residual block uses 1×1 convolutions, known as a “bottleneck”, which reduces the number of parameters and matrix multiplications. This enables much faster training of each layer.
+
+Below is the architecture of ResNet50:
+
+<img src="40_docs/figures/resnet50.png" width="700" height="300">
 
 ### Metrics <a name="Metrics"></a>
 
@@ -120,8 +120,6 @@ After running model inference, we have 11,092 verified WWTPs.
 The comprehensive, verified list of WWTPs across United States can be found [here](add link).
 
 ## Conclusion <a name="Conclusion"></a>
-
-## Model Inference Instructions <a name="ModelInference"></a>
 
 ## Resources <a name="Resources"></a>
 1. [Department of Energy. (n.d.). Wastewater Infrastructure. Energy.gov. Retrieved September 27, 2023](https://www.energy.gov/scep/slsc/wastewater-infrastructure#:~:text=Across%20the%20country%2C%20municipal%20wastewater,billion%20in%20annual%20electric%20costs)<a name="energy-ref"></a>
