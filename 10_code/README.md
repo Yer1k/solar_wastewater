@@ -1,5 +1,10 @@
 ## This is where the magic happens
 
+ > Note: Some of the files are stored in Google Drive which is shared with the client. If you, the public, want to view the specific files, you may need to request access to the folder to view the document.
+
+## src folder
+
+## tools folder
 
 ## Model Training and Validation
 Please refer to [Model Training and Validation Notebook](./model_training_ResNet50_scene_classification.ipynb)
