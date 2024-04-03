@@ -29,15 +29,37 @@ The data provided by our client consisted of 40 WWTPs in California that were ma
 
 ### OpenStreetMap (OSM) <a name="OSM"></a>
 
-OpenStreetMap (OSM) is a free and open geographic database. It is updated and maintained by a community of volunteers. Since all geographic structures in OSM's database are tagged, we filter wastewater treatment plants using the tag "man_made"="wastewater_plant". Although the abundance and accessibility of the data are advantageous, upon closer examination, we discovered discrepancies between this data from OSM and our client's specific criteria for wastewater treatment plants (WWTPs). Despite the extensive nature of the data in OpenStreetMap (OSM), it did not fully align with our client's definition of WWTPs. More information can be found [here](#osm-ref).
+OpenStreetMap (OSM) is a free and open geographic database. It is updated and maintained by a community of volunteers. Since all geographic structures in OSM's database are tagged, we filter wastewater treatment plants using the tag "man_made"="wastewater_plant". This resulted in 14,282 possible WWTPs. Although the abundance and accessibility of the data are advantageous, upon closer examination, we discovered discrepancies between this data from OSM and our client's specific criteria for wastewater treatment plants (WWTPs). Despite the extensive nature of the data in OpenStreetMap (OSM), it did not fully align with our client's definition of WWTPs. More information can be found [here](#osm-ref).
 
 ### Environmental Protection Agency (EPA) <a name="EPA"></a>
 
-We also use a WWTP dataset published by the Environmental Protection Agency (EPA) with information relating to location and facility identification from the EPA's Facility Registry Service (FRS) from the year 2020. Similar to OSM, after analysing the data, we found that there were entries tagged as wastewater treatment plants but were ponds or other geographic structures like forests.
+We also use a WWTP dataset published by the Environmental Protection Agency (EPA) with information relating to location and facility identification from the EPA's Facility Registry Service (FRS) from the year 2020. The size of this dataset was 14,327 possible WWTPs. Similar to OSM, after analysing the data, we found that there were entries tagged as wastewater treatment plants but were ponds or other geographic structures like forests.
 
 ### HydroWaste <a name="HydroWaste"></a>
 
-An open-source spatially explicit global database of 58,502 wastewater treatment plants (WWTPs)​ and various other characteristics such as population served, amount of wastewater discharged, dilution factor of nearby water bodies that wastewater is discharged into, etc. Similar to the OSM and EPA datasets, after analysing the data, we found that there were entries tagged as wastewater treatment plants but were not. More information can be found [here](#hydrowaste-ref).
+An open-source spatially explicit global database of 58,502 wastewater treatment plants (WWTPs)​ and various other characteristics such as population served, amount of wastewater discharged, dilution factor of nearby water bodies that wastewater is discharged into, etc. After filtering for United States, this resulted in 14,748 possible WWTPs. Similar to the OSM and EPA datasets, after analysing the data, we found that there were entries tagged as wastewater treatment plants but were not. More information can be found [here](#hydrowaste-ref).
+
+Below is an example of images that demonstrate the incorrect tagging from the above three data sources:
+
+True WWTP
+
+![WWTP](40_docs/figures/wwtp_example.png)
+
+Falsely Labeled as WWTP
+
+![NotWWTP](40_docs/figures/not_wwtp_example.png)
+
+After merging the four datasets, we had 40,397 possible WWTPs.
+
+Below is a map of the WWTPs with solar provided by the client:
+
+![ClientMap](40_docs/figures/client_data_map.png)
+
+Below is a map of the possible WWTPs after mergining all datasets:
+
+![AllMap](40_docs/figures/three_sources_map.png)
+
+As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
 
 ## Methodology <a name="Methodology"></a>
 
