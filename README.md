@@ -43,21 +43,21 @@ Below is an example of images that demonstrate the incorrect tagging from the ab
 
 True WWTP
 
-![WWTP](40_docs/figures/wwtp_example.png)
+<img src="40_docs/figures/wwtp_example.png" width="200" height="100">
 
 Falsely Labeled as WWTP
 
-![NotWWTP](40_docs/figures/not_wwtp_example.png)
+<img src="40_docs/figures/not_wwtp_example.png" width="200" height="100">
 
 After merging the four datasets, we had 40,397 possible WWTPs.
 
 Below is a map of the WWTPs with solar provided by the client:
 
-![ClientMap](40_docs/figures/client_data_map.png)
+<img src="40_docs/figures/client_data_map.png" width="200" height="100">
 
 Below is a map of the possible WWTPs after mergining all datasets:
 
-![AllMap](40_docs/figures/three_sources_map.png)
+<img src="40_docs/figures/three_sources_map.png" width="200" height="100">
 
 As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
 
