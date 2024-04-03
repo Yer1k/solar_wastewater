@@ -85,7 +85,14 @@ We not only needed to find the best model parameters for our training data but a
 
 #### Stage 1: Parameter Tuning 
 
+Here we try different parameter settings to determine which set of parameters perform best on the training data. We choose the model with the highest max F1 score and AUC score.
+Further information on parameters used and results can be found [here](10_code/README.md).
+
 #### Stage 2: Within Domain vs Cross Domain Performance
+
+Within domain refers to training and testing on the same state. Cross domain refers to training and testing on different states.
+Here we perform within domain vs cross domain performance experiments to ensure good cross domain performance. We do this because WWTPs in different states may look different from each other and we want to ensure that training on California and Texas would generalize well to other states.
+Further information on parameters used and results can be found [here](10_code/README.md).
 
 ### Models <a name="Models"></a>
 
@@ -117,7 +124,7 @@ After running model inference, we have 11,092 verified WWTPs.
 
 <img src="40_docs/figures/after.png" width="500" height="300">
 
-The comprehensive, verified list of WWTPs across United States can be found [here](add link).
+The comprehensive, verified list of WWTPs across United States can be found [here](https://drive.google.com/drive/folders/1Ci7mXguTFOtjgDl0OTZ5oUhmNhh5Iw0R?usp=drive_link).
 
 ## Conclusion <a name="Conclusion"></a>
 

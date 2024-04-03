@@ -1,6 +1,47 @@
-## This is where the magic happens
+## Experiments
 
+ 
  > Note: Some of the files are stored in Google Drive which is shared with the client. If you, the public, want to view the specific files, you may need to request access to the folder to view the document.
+
+### Stage 1: Parameter Tuning
+
+The parameters we tuned for are as follows:
+
+1. Crop size of image: We center crop the input images to remove surrounding geographical structures that may not be a part of the WWTP. The crop sizes used are: 224x224, 320x320, 512x512, 2228x2228 (original).  
+2. Freezing the ResNet architecture: We either finetune all the layers or freeze the first layers of the ResNet50 and train only the final fully connected layer.  
+3. Pretrained weights: We use weights that are either trained on ImageNet or Sentinel2 satellite images.  
+
+The results of the experiments are as follows:
+
+| Weights      | Crop Size          | Freeze   | F1 Score   | AUC       |
+|--------------|--------------------|----------|------------|-----------|
+| ImageNet     | Original           | No       | 0.5198     | 0.87      |
+| ImageNet     | Original           | Yes      | 0.5013     | 0.86      |
+| ImageNet     | 512x512            | No       | 0.5075     | 0.92      |
+| ImageNet     | 512x512            | Yes      | 0.5124     | 0.92      |
+| ImageNet     | 320x320            | No       | 0.6554     | 0.93      |
+| ImageNet     | 320x320            | Yes      | 0.6447     | 0.92      |
+| ImageNet     | 224x224            | No       | 0.5198     | 0.87      |
+| ImageNet     | 224x224            | Yes      | 0.5198     | 0.87      |
+| Sentinel2    | Original           | No       | 0.6140     | 0.88      |
+| Sentinel2    | Original           | Yes      | 0.6413     | 0.91      |
+| Sentinel2    | 512x512            | No       | 0.6653     | 0.91      |
+| Sentinel2    | 512x512            | Yes      | 0.6612     | 0.90      |
+| Sentinel2    | 320x320            | No       | 0.6671     | 0.87      |
+| Sentinel2    | 320x320            | Yes      | 0.6135     | 0.90      |
+| Sentinel2    | 224x224            | No       | 0.6524     | 0.86      |
+| Sentinel2    | 224x224            | Yes      | 0.6596     | 0.91      |
+
+From the above table we see that the model fully trained on ImageNet weights, with crop size of 320 performed the best with an AUC of 0.93. We choose this model for the next stage.
+
+### Stage 2: Within Domain vs Cross Domain Performance
+
+| Training on / Validation on       | Texas                      | California                   |
+|-----------------------------------|----------------------------|------------------------------|
+| Texas                             | AUC:0.93, Max F1: 0.8454   | AUC:0.89, Max F1: 0.5482     |
+| California                        | AUC:0.75, Max F1: 0.6175   | AUC:0.91, Max F1: 0.6139     |
+
+While there is a performance drop when running cross domain, the max F1 scores and AUC scores are still high, demonstrating the model's generalizability.
 
 ## src folder
 
