@@ -7,25 +7,55 @@ from torchvision import transforms
 import torchvision.models as models
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
+import torchgeo
+import torchgeo.models as geomodels
 
 class SceneClassifier(nn.Module):
     """
     Scene Classifier Model
-    
-    Args:
-    num_classes: int, number of classes in the dataset
-    
-    Returns:
-    model: Scene Classification ResNet50 model
     """        
-    def __init__(self, num_classes, pretrained_weights, freeze="No"):
+    def __init__(self, num_classes, pretrained_weights, freeze=False):
+        """
+        Initializes model
+        
+        Args:
+        num_classes: int, number of classes in the dataset
+        pretrained_weights: string, determines pretrained weights to be used
+        freeze: bool, determines whether the resnet50 model layers with pretrained weights should be frozen while training
+        
+        Returns:
+        model: Scene Classification ResNet50 model
+        """  
         super(SceneClassifier, self).__init__()
-        self.features = models.resnet50(weights=pretrained_weights)
-        # https://pytorch.org/vision/stable/models.html
+
+        # Uses geospatial foundation resnet50 model weights pretrained on SENTINEL2 satellite images
+        if pretrained_weights == "Sentinel2":
+            self.features = geomodels.resnet50(weights=torchgeo.models.ResNet50_Weights.SENTINEL2_RGB_MOCO)    
+        
+        # Uses resnet50 weights pretrained on ImageNet
+        else:
+            self.features = models.resnet50(weights='ResNet50_Weights.IMAGENET1K_V1')
+
+        # Freezes all layers of resnet50 with pretrained weights
+        if freeze:
+            for parameter in self.features.parameters():
+                parameter.requires_grad = False
+
         num_ftrs = self.features.fc.in_features
+
+        # Adds trainable final fully connected layer with linear activation
         self.features.fc = nn.Linear(num_ftrs, num_classes)
 
     def forward(self, x):
+        """
+        Runs forward pass on model
+        
+        Args:
+        x: input tensor
+        
+        Returns:
+        x: output tensor after forward pass
+        """  
         x = self.features(x)
         return x
 
