@@ -134,9 +134,13 @@ The comprehensive, verified list of WWTPs across United States can be found [her
 3. [OSM](https://www.openstreetmap.org/)<a name="osm-ref"></a>
 
 ## Project Members <a name="Members"></a>
-[Pooja Kabber](https://www.linkedin.com/in/poojakabber/)  
-[Sukhpreet Sahota](https://github.com/5ukhy21) 
+
+[Pooja Kabber](https://www.linkedin.com/in/poojakabber/)
+
+[Sukhpreet Sahota](https://github.com/5ukhy21)
+
 [Dingkun Yang](https://yer1k.com/)  
+
 [Yuanjing Zhu](https://github.com/YZhu0225) 
 
 #### Project Mentors: [Dr. Kyle Bradbury](https://energy.duke.edu/about/staff/kyle-bradbury), [Dr. Christine Kirchhoff](https://iee.psu.edu/people/christine-j-kirchhoff)
