@@ -6,16 +6,16 @@
 1. [Introduction](#Introduction)  
 2. [Data Sources](#DataSources)   
    2.1 [Data Provided By Client](#ClientData)  
-   2.2 [OpenStreetMap](#OSM) 
+   2.2 [OpenStreetMap](#OSM)  
    2.3 [EPA](#EPA)  
-   2.4 [HydroWaste](#HydroWaste)
+   2.4 [HydroWaste](#HydroWaste)  
 3. [Methodology](#Methodology)  
    3.1 [Overview](#MethodologyOverview)  
-   3.2 [Process Diagram](#ProcessDiagram)
+   3.2 [Process Diagram](#ProcessDiagram)  
 4. [Models](#Models)
 5. [Experiments](#Experiments) 
-   5.1 [Overview](#ExperimentOverview) 
-   5.2 [Metrics](#Metrics)
+   5.1 [Overview](#ExperimentOverview)  
+   5.2 [Metrics](#Metrics)  
 6. [Results](#Results)
 5. [Conclusion](#Conclusion)  
 7. [Resources](#Resources)  
@@ -62,7 +62,7 @@ Below is a map of the WWTPs with solar provided by the client:
 
 Below is a map of the possible WWTPs after mergining all datasets:
 
-<img src="40_docs/figures/three_sources_map.png" width="500" height="300">
+<img src="40_docs/figures/three_sources_map.png" width="600" height="300">
 
 As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
 
@@ -82,7 +82,7 @@ The model used was ResNet50. ResNet50 is a specific type of convolutional neural
 
 Below is the architecture of ResNet50:
 
-<img src="40_docs/figures/resnet50.png" width="600" height="300">
+<img src="40_docs/figures/resnet50.png" width="700" height="300">
 
 ## Experiments <a name="Experiments"></a>
 In this section, we will dive deep into our experimentation process.
@@ -101,15 +101,23 @@ We not only needed to find the best model parameters for our training data but a
 The F1 score can range from 0 to 1, with a higher score indicating better model performance.
 
 ``` math
-\[
 F_{1}=\frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
-\]
 ```
 
 2. AUC: The Area Under the Curve (AUC) is the measure of the ability of a binary classifier to distinguish between classes and is used as a summary of the ROC curve.
 The higher the AUC, the better the model’s performance at distinguishing between the positive and negative classes.
 
 ## Results <a name="Results"></a>
+
+After merging all the datasets we had 40,397 possible WWTPs.
+
+<img src="40_docs/figures/before.png" width="500" height="300">
+
+After running model inference, we have 11,092 verified WWTPs.
+
+<img src="40_docs/figures/after.png" width="500" height="300">
+
+The comprehensive, verified list of WWTPs across United States can be found [here](add link).
 
 ## Conclusion <a name="Conclusion"></a>
 
