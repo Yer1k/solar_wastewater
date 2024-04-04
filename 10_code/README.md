@@ -110,3 +110,24 @@ The best model is saved as [`best_model_50_v1_crop_320_train_both.pth`](https://
 - [OSM_CA_TX_analysis.ipynb](OSM_CA_TX_analysis.ipynb)
 
     This notebook conducts geographical and statistical analysis in California and Texas using OSM data after manual tagging. It includes an overlap analysis of the self-curated OSM dataset with client-provided dataset for California. The analysis extends to the demographic and economic characteristics of the municipalities associated with respective WWTPs.
+
+
+## Downloading Images From Data Sources
+
+- [download_epa_hw_images.py](download_epa_hw_images.py)
+
+    This Python script reads the input data for the wastewater treatment plants to be analyzed and uses Google Earth Engine's API to download the corresponding images for each respective wastewater treatment plant. This script was designed to read the WWTP data obtained from the EPA and HydroWaste. To accelerate the downloading process and make for an efficient pipeline, this script leverages parallel processing.
+
+- [download_osm_images.py](download_osm_images.py)
+
+    Similar to the [download_osm_images.py](download_osm_images.py) Python script, this Python scripts reads the input data for the wastewater treatment plants to be analyzed and uses Google Earth Engine's API to download the corresponding images for the respective wastewater treatment plant. However, as this script was designed to read the WWTP data obtained from OpenStreetMap, the geographical data within this data source provides the coordinates for all points on the perimeter of the WWTP. This script obtains the centroid coordinates of the respective wastewater treatment plant and then leverages parallel processing to expedite the downloading of the images.
+
+## Plotting
+
+- [plot_bounding_box.ipynb](plot_bounding_box.ipynb)
+
+    This notebook overlays the bounding box, which is comprised of the perimeter of a WWTP, on top of the related WWTP image. In doing this, an individual is able to better distinguish the WWTP within the image. In doing this, this script automates the visualization of geographical boundaries or areas of interest (bounding boxes) on satellite images or similar geospatial raster data, facilitating the analysis or presentation of the data related to WWTPs.
+
+- [inference_plot.ipynb](inference_plot.ipynb)
+
+    This notebook generates a map of the United States and plots the WWTPs (via their respective coordinates). There are two sets of maps that are created: 1) The first map is generated based on the total number of WWTPs that were aggregated across all data sources and 2) The second map is generated based on the inference of our model (which was highlighted above within [Model Training and Validation Notebook](./model_training_ResNet50_scene_classification.ipynb). This visualization enables a before and after of the number of WWTPs across the United States, accounting for the discrepancies and mislabeling recognized across all three data sources.
