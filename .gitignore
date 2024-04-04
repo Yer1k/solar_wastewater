@@ -1,3 +1,6 @@
+# ignore data
+data/
+
 # ignore venv
 geo_venv/
 

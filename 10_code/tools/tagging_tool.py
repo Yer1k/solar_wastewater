@@ -14,8 +14,16 @@ st.markdown(new_title, unsafe_allow_html=True)
 state_name = st.text_input("👉 Enter the state name you want to tag:", value="").strip()
 
 
-# Function to display the current image and handle user responses
 def display_current_image(df_yes):
+    """
+    Display the current image and handle user responses for tagging.
+    
+    Inputs:
+    - df_yes: Dataframe containing only images that have been tagged as "Yes"
+
+    Outputs:
+    - None
+    """
     col1, col2 = st.columns([3, 2])  # Adjust column width ratios as needed
 
     if 0 <= st.session_state.current_image_index < len(df_yes):
@@ -79,8 +87,19 @@ def display_current_image(df_yes):
                 col2.info("You've reached the last image in the folder.")
 
 
-# Function to update the response in the dataframe
 def update_response(current_image, tag_type, response):
+    """
+    Update the response in the dataframe.
+
+    Inputs:
+    - current_image: Dictionary containing information about the current image
+    - tag_type: String indicating the type of tag (WWTP or Solar)
+    - response: String indicating the response (Yes or No)
+
+    Outputs:
+    - SPREADSHEET_FILE: Updated CSV file with the response
+    """
+    # Update the response in the dataframe based on the tag type and filename
     column_name = "wwtp_tag" if tag_type == "WWTP" else "solar_tag"
     df.loc[df["filename"] == current_image["filename"], column_name] = response
     df.to_csv(SPREADSHEET_FILE, index=False)
