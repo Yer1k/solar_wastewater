@@ -9,7 +9,7 @@
   
     This is the final presentation for the project. It contains the motivation, methodology, results, and impact of the project. Please refer to this document for a comprehensive overview of the project.
 
-- [Link to the animated presentation](https://docs.google.com/presentation/d/1Z8flCSFsrAtWa0HSw4SMfZlpBfJmj0tp/edit?usp=drive_link&ouid=111199461708799499514&rtpof=true&sd=true)
+- [Link to the animated presentation](https://docs.google.com/presentation/d/11XcWqU8YcchyDSPtPdYUufQWdLmKvuIK/edit?usp=share_link&ouid=110726489657206269464&rtpof=true&sd=true)
     
     Due to the size of the presentation, it is stored in Google Drive. Please click the link to view the presentation.
 

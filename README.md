@@ -128,6 +128,8 @@ The comprehensive, verified list of WWTPs across United States can be found [her
 
 ## Conclusion <a name="Conclusion"></a>
 
+*This is a placeholder that we hope to fill in with results based on our model and associated inferences. This section aims to reflect the end count of WWTPs within each state based on inference, based on observation, and WWTPs with solar. Additionally, we want to use this section to outline future activities as well as the implications of economic diversity and placement of solar within affluent communities compared to within impoverished communities across the United States.*
+
 ## Resources <a name="Resources"></a>
 1. [Department of Energy. (n.d.). Wastewater Infrastructure. Energy.gov. Retrieved September 27, 2023](https://www.energy.gov/scep/slsc/wastewater-infrastructure#:~:text=Across%20the%20country%2C%20municipal%20wastewater,billion%20in%20annual%20electric%20costs)<a name="energy-ref"></a>
 2. [Hydrowaste](https://www.hydrosheds.org/products/hydrowaste)<a name="hydrowaste-ref"></a>
