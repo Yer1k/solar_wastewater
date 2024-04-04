@@ -9,7 +9,7 @@ All the satellite images downloaded from Google Earth Engine are stored in [Goog
 
 ### Files for Visualizations
 
-These are the files used for plotting the distribution map of wastewater treatment plants (WWTP) and for analyzing the demographic and economic characteristics of the municipalities associated with respective WWTPs
+These are the files used for plotting the distribution map of wastewater treatment plants (WWTP) and for analyzing the demographic and economic characteristics of the municipalities associated with respective WWTPs.
 
 - `CA_2016_06_place`: Geographic boundaries for Minor Civil Divisions (MCDs) in California, sourced from [California Open Data Portal](https://data.ca.gov/dataset/ca-geographic-boundaries).
 

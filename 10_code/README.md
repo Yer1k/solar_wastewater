@@ -96,3 +96,17 @@ The model was trained on 2 classes of scenes, `Wastewater Treatment Plant` as `Y
 
 The best model is saved as [`best_model_50_v1_crop_320_train_both.pth`](https://drive.google.com/file/d/1bfbLdByUYXedY6bFKMzFT_dlBdxTbiAs/view?usp=drive_link) in the Google Drive folder. 
 
+
+## Comparative Analyses of WWTP Datasets Across Multiple Sources
+
+- [HydroWaste_EPA_analysis.ipynb](HydroWaste_EPA_analysis.ipynb)
+
+    This notebook conducts a comparative analysis between the EPA's WWTP dataset and the HydroWaste dataset. It examines the quantity and spatial distribution of WWTPs across 50 states, and analyzes the overlap and discrepancies between the two datasets using distance-based criterion.
+
+- [HydroWaste_OSM_analysis.ipynb](HydroWaste_OSM_analysis.ipynb)
+
+    This notebook undertakes a detailed comparison of WWTP data from the OpenStreetMap (OSM) and HydroWaste datasets, with a focus on California and Texas. It explores the number of WWTP, and distribution within each state. It also employs a distance-based approach to investigate the overlap between the datasets.
+
+- [OSM_CA_TX_analysis.ipynb](OSM_CA_TX_analysis.ipynb)
+
+    This notebook conducts geographical and statistical analysis in California and Texas using OSM data after manual tagging. It includes an overlap analysis of the self-curated OSM dataset with client-provided dataset for California. The analysis extends to the demographic and economic characteristics of the municipalities associated with respective WWTPs.
