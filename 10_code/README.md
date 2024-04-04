@@ -56,13 +56,35 @@ While there is a performance drop when running cross domain, the max F1 scores a
     This script is used to delete the png images from the dataset folder. The script takes the path to the dataset folder as input and deletes all the png images from the folder. The script is used to delete the png images from the dataset folder before training the model if mass amount of png images are present in the dataset folder.
 
 
-
-
 ## tools folder
 
 - [count_file_names_csv.ipynb](./tools/count_file_names_csv.ipynb)
 
     This notebook is used to count the number of files in the folder and save the file names to a csv file.
+
+- [tagging_tool.py](./tools/tagging_tool.py)
+
+    This Streamlit-based application, `tagging_tool.py`, allows users to efficiently tag images for the presence of WWTP and Solar Panels within datasets organized by state. It's designed for simplicity and ease of use.
+
+    #### How to Use
+    1. Start the Application: Launch the tool in your browser by running the command below.
+    ```streamlit run tagging_tool.py```
+    2. Enter State Name: Type the state's name for which you intend to tag images.
+    3. Select Image: Choose the initial image from the dropdown menu.
+    4. Confirm Selection: Click "Confirm and Proceed!" to load the image.
+    5. Tagging: Determine the presence of WWTP or Solar Panels for each image and select the corresponding button.
+    6. Navigation: Move through images using "Previous" and "Next". You'll be notified upon reaching the last image.
+    7. Reset: To restart or switch states, use the "Reset" button.
+
+    #### Data Structure
+    To use this tool, your dataset should be organized as follows:
+
+    - ```data/<state_name>```: Contains the images.
+    - ```data/predictions_best_<state_name>.csv```: Spreadsheet listing filenames and initial predictions.
+    - The ```tagging_tool.py``` script should be located in the same folder as the data directory.
+
+    Replace <state_name> with the actual state name.
+
 
 
 ## Model Training and Validation
