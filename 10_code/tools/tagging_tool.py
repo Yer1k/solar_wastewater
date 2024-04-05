@@ -50,8 +50,10 @@ def display_current_image(df_yes):
         else:
             # Use HTML to display image with enlargement feature
             with col1:
-                st.write("<style> img { max-width: 100%; height: auto; } </style>", unsafe_allow_html=True)
+                st.write("<style> .image-container { margin-bottom: 20px; } img { max-width: 97%; height: auto; } </style>", unsafe_allow_html=True)
+                st.markdown('<div class="image-container">', unsafe_allow_html=True)
                 st.image(current_image_path, caption=current_image["filename"], use_column_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
 
             # display curent status of the image
             wwtp_status = (
@@ -64,6 +66,11 @@ def display_current_image(df_yes):
                 if pd.isnull(current_image["Solar?"])
                 else "Tagged as " + current_image["Solar?"]
             )
+            
+            # Add margin to the top of col2
+            col2.markdown('<style> .col2-container { margin-top: 200px; } </style>', unsafe_allow_html=True)
+            col2.markdown('<div class="col2-container">', unsafe_allow_html=True)
+            
             col2.write(
                 f"📝 Current Status: WWTP - {wwtp_status}, Solar - {solar_status}"
             )
@@ -92,6 +99,8 @@ def display_current_image(df_yes):
                 col2.success(
                     f'"No" response for "Solar" saved for {current_image["filename"]}'
                 )
+
+            col2.markdown('</div>', unsafe_allow_html=True)
 
             # Navigation buttons
             col2.write("")
