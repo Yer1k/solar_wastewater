@@ -69,19 +69,19 @@ While there is a performance drop when running cross domain, the max F1 scores a
     #### How to Use
     1. Start the Application: Launch the tool in your browser by running the command below.
     ```streamlit run tagging_tool.py```
-    2. Enter State Name: Type the state's name for which you intend to tag images.
-    3. Select Image: Choose the initial image from the dropdown menu.
-    4. Confirm Selection: Click "Confirm and Proceed!" to load the image.
-    5. Tagging: Determine the presence of WWTP or Solar Panels for each image and select the corresponding button.
-    6. Navigation: Move through images using "Previous" and "Next". You'll be notified upon reaching the last image.
-    7. Reset: To restart or switch states, use the "Reset" button.
+    2. Upload the comprehensive excel sheet
+    3. Enter State Name: Type the state's name for which you intend to tag images.
+    4. Select Image: Choose the initial image from the dropdown menu.
+    5. Confirm Selection: Click "Confirm and Proceed!" to load the image.
+    6. Tagging: Determine the presence of WWTP or Solar Panels for each image and select the corresponding button.
+    7. Navigation: Move through images using "Previous" and "Next". You'll be notified upon reaching the last image.
+    8. Reset: To restart or switch states, use the "Reset" button.
 
     #### Data Structure
     To use this tool, your dataset should be organized as follows:
 
-    - ```data/<state_name>```: Contains the images.
-    - ```data/predictions_best_<state_name>.csv```: Spreadsheet listing filenames and initial predictions.
-    - The ```tagging_tool.py``` script should be located in the same folder as the data directory.
+    - ```../<state_name>```: Contains the images.
+    - ```../tagging_tool.py```: The script should be located in the same folder as the <state_name> directory.
 
     Replace <state_name> with the actual state name.
 
