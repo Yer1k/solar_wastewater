@@ -48,7 +48,10 @@ def display_current_image(df_yes):
                 "IMAGE NOT FOUND"
             )
         else:
-            col1.image(current_image_path, caption=current_image["filename"], width=500)
+            # Use HTML to display image with enlargement feature
+            with col1:
+                st.write("<style> img { max-width: 100%; height: auto; } </style>", unsafe_allow_html=True)
+                st.image(current_image_path, caption=current_image["filename"], use_column_width=True)
 
             # display curent status of the image
             wwtp_status = (
