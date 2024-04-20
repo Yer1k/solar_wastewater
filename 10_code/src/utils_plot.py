@@ -3,10 +3,13 @@ import geopandas as gpd
 import numpy as np
 from shapely.geometry import Point
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 import seaborn as sns
 import ast
 from scipy.spatial import cKDTree
 from geopy.distance import geodesic
+from rasterio.plot import show
+import statsmodels.api as sm
 
 
 def state_name_abbrev_pair():
@@ -635,3 +638,144 @@ def pop_income_boxplot(merged_gdf, wwtp_gdf):
     ax2.set_title("Number of WWTP vs Median Income", fontsize=16)
 
     plt.show()
+
+
+def wwtp_with_pop_distribution(wwtp, gridded_pop, color, colormap, title):
+    """
+    Plot the WWTP data on a map with the gridded population data
+
+    Input:
+    - wwtp: geodataframe with WWTP list
+    - gridded_pop: rasterio dataset with gridded population data
+    - color: color of the WWTP data points
+    - colormap: colormap for the gridded population data
+    - title: title of the plot
+
+    Output:
+    - plot of the WWTP data on a map with the gridded population data
+    """
+    fig, ax = plt.subplots(figsize=(20, 20))
+
+    ax.set_xlim(-125, -66)
+    ax.set_ylim(24, 50)
+
+    # mask the no data values
+    gridded_pop_data = gridded_pop.read(1, masked=True)
+    # change no data values to 0
+    gridded_pop_data = np.nan_to_num(gridded_pop_data)
+
+    # add a small number to avoid log(0)
+    err = 1e-6
+    vmin = gridded_pop_data.min() + err
+    vmax = gridded_pop_data.max()
+    norm = colors.LogNorm(vmin=vmin, vmax=vmax)
+
+    show(gridded_pop, ax=ax, cmap=colormap, norm=norm)
+    cbar = plt.colorbar(mappable=plt.cm.ScalarMappable(cmap=colormap, norm=norm), ax=ax)
+
+    # plot the wwtp
+    wwtp.plot(ax=ax, color=color, markersize=2)
+    plt.title(title, fontsize=20)
+    plt.show()
+
+
+def process_state_data(path, column_name):
+    """
+    Read and process the socioeconomic data for US states
+
+    Input:
+    - path: path to the data
+    - column_name: column name of the data
+
+    Output:
+    - statewise_df: dataframe with the processed data
+    """
+    statewise_df = pd.read_csv(path)
+    if column_name == "population":
+        statewise_df = statewise_df.iloc[1, :]
+    elif column_name == "income":
+        statewise_df = statewise_df.iloc[0, :]
+    statewise_df = statewise_df.reset_index()
+    statewise_df.columns = ["state", column_name]
+    statewise_df = statewise_df.iloc[1:, :]
+    # only keep rows with Estimate in the state column
+    if column_name == "population":
+        statewise_df = statewise_df.loc[statewise_df["state"].str.contains("Estimate")]
+        statewise_df["state"] = statewise_df["state"].str.replace("!!Estimate", "")
+    elif column_name == "income":
+        statewise_df = statewise_df.loc[
+            statewise_df["state"].str.contains("!!Households!!Estimate")
+        ]
+        statewise_df["state"] = statewise_df["state"].str.replace(
+            "!!Households!!Estimate", ""
+        )
+    # all capital letters for state
+    statewise_df["state"] = statewise_df["state"].str.upper()
+    statewise_df.reset_index(drop=True, inplace=True)
+    statewise_df[column_name] = statewise_df[column_name].str.replace(",", "")
+    statewise_df[column_name] = statewise_df[column_name].astype(int)
+    return statewise_df
+
+
+def plt_pop_income_wwtp(merged_df, title, ax, column_name):
+    """
+    Plot the number of WWTPs vs population and total household income
+
+    Input:
+    - merged_df: dataframe with merged data
+    - title: title of the plot
+    - ax: axis to plot
+    - column_name: column name of the data
+
+    Output:
+    - plot of the number of WWTPs vs population and total household income
+    """
+    sns.scatterplot(
+        data=merged_df,
+        x="income",
+        y=column_name,
+        ax=ax,
+        size="population",
+        hue="population",
+        sizes=(10, 250),
+        palette="Blues",
+        edgecolor="black",
+    )
+    ax.set_xlabel("Total Household Income", fontsize=15)
+    ax.set_ylabel("Number of WWTPs", fontsize=15)
+    ax.set_title(title, fontsize=20)
+    ax.legend(title="Population", fontsize=10)
+
+
+def lr_analysis(merged_df, x_col, y_col, x_label, y_label, titte, if_plt=True):
+    """
+    Perform linear regression analysis and plot the results
+
+    Input:
+    - merged_df: dataframe with merged data, including x_col and y_col
+    - x_col: column name of the independent variable
+    - y_col: column name of the dependent variable'
+    - x_label: label of the independent variable
+    - y_label: label of the dependent variable
+    - titte: title of the plot
+    - if_plt: whether to plot the regression line
+
+    Output:
+    - linear regression analysis results
+    - plot of the regression line
+    """
+    X = merged_df[x_col]
+    X = sm.add_constant(X)
+    y = merged_df[y_col]
+
+    model = sm.OLS(y, X)
+    results = model.fit()
+    print(results.summary())
+
+    if if_plt:
+        fig, ax = plt.subplots(figsize=(10, 10))
+        sns.regplot(data=merged_df, x=x_col, y=y_col, ax=ax)
+        plt.ylabel(y_label)
+        plt.xlabel(x_label)
+        plt.title(titte)
+        plt.show()
