@@ -30,7 +30,7 @@ To address this question, we leveraged and added to the existing data on wastewa
 
 ### Data Provided by Client <a name="ClientData"></a>
 
-The data provided by our client consisted of 40 WWTPs in California that were manually verified. The data can be found [here](Add link to drive).
+The data provided by our client consisted of 40 WWTPs in California that were manually verified. The data can be found [here](https://docs.google.com/spreadsheets/d/1KJWr7KgCWb3UbIloUKGWdei0qoXiaiwe/edit?usp=share_link&ouid=110726489657206269464&rtpof=true&sd=true).
 
 ### OpenStreetMap (OSM) <a name="OSM"></a>
 
@@ -38,7 +38,7 @@ OpenStreetMap (OSM) is a free and open geographic database that is built through
 
 ### Environmental Protection Agency (EPA) <a name="EPA"></a>
 
-Upon recognizing the discrepancies and errors within OpenStreetMap (OSM), we found it essential to the success of our project and ultimate end-goal to augment our data with data from additional data sources. We used a WWTP dataset published by the Environmental Protection Agency (EPA) with information relating to location and facility identification from the EPA's Facility Registry Service (FRS) from the year 2020. The size of this dataset was 14,327 possible WWTPs. Similar to OSM, after analysing the data, we found that there were entries tagged incorrectly, with geographic structures like forests and ponds tagged as wastewater treatment plants.
+Upon recognizing the discrepancies and errors within OpenStreetMap (OSM), we found it essential to the success of our project and ultimate end-goal to augment our data with data from additional data sources. We used a WWTP dataset published by the Environmental Protection Agency (EPA) with information relating to location and facility identification from the EPA's Facility Registry Service (FRS) from the year 2020. The size of this dataset was 14,327 possible WWTPs. While we expected this data to be more credible due to the verified nature of the source (EPA being a government agency), after analysing the data, we found that there were entries tagged incorrectly similar to the discrepancies found within OSM, with geographic structures like forests and ponds tagged as wastewater treatment plants. More information can be found [here](#epa-ref)
 
 ### HydroWaste <a name="HydroWaste"></a>
 
@@ -60,17 +60,21 @@ Below is a map of the WWTPs with solar provided by the client:
 
 <img src="40_docs/figures/client_data_map.png" width="500" height="300">
 
-Below is a map of the possible WWTPs after mergining all datasets:
+Below is a map of the possible WWTPs after merging all datasets:
 
 <img src="40_docs/figures/three_sources_map.png" width="600" height="300">
 
-As can be seen from the above image, there are many WWTPs that do not overlap, indicating that none of the datasets are comprehensive.
+As can be seen from the above image, there are two aspects to this map that were noticed by our team (and may be seen by you as the reader of this project):
+
+1) There is significant overlap amongst the data sources, which indicates that to ensure we obtain a single source of truth, we must deduplicate common WWTP records
+AND
+2) There are WWTPs that do not overlap, which indicates that none of the datasets are comprehensive.
 
 ## Methodology <a name="Methodology"></a>
 
 ### Overview <a name="MethodologyOverview"></a>
 
-Since the number of possible WWTPs from the different sources are too many to manually verify for true WWTP and solar presence, we manually verified and tagged the possible WWTPs from all three data sources for California and Texas, as they were of primary importance to our client. This manual activity resulted in the identification of close to 900  We used this as the training dataset for our scene binary classification model and used the trained model to predict presence of WWTP in the images for other states. We obtained 10k WWTPs from the model inference. Once we had a verified list of all WWTPs, we manually verified the presence of solar.
+Since the number of possible WWTPs from the different sources are too many to manually verify for true WWTP and solar presence, we manually verified and tagged the possible WWTPs from all three data sources for California and Texas, as they were of primary importance to our client. This manual activity resulted in the identification of close to 900 correctly tagged wastewater treatment plants and close to 4,600 incorrectly tagged wastewater treatment plant locations. We used this as the training dataset for our scene binary classification model and used the trained model to predict the presence of WWTP in the images for other states. Upon running our model on the remaining ~35,000 possible wastewater treatment plants for the remaining 48 states, our model predicted the detection of ~11,000 WWTPs nationwide. Using this predicted list, we manually verified the list for all true WWTPs and the presence of solar, resulting in ~6,000 WWTPs and ~200 WWTPs with solar.
 
 ### Process Diagram <a name="ProcessDiagram"></a>
 
@@ -120,20 +124,31 @@ After merging all the datasets we had 40,397 possible WWTPs.
 
 <img src="40_docs/figures/before.png" width="500" height="300">
 
-After running model inference, we have 11,092 verified WWTPs.
+After running model inference, we have 11,092 predicted WWTPs.
 
 <img src="40_docs/figures/after.png" width="500" height="300">
 
-The comprehensive, verified list of WWTPs across United States can be found [here](https://drive.google.com/drive/folders/1Ci7mXguTFOtjgDl0OTZ5oUhmNhh5Iw0R?usp=drive_link).
+The comprehensive, predicted list of WWTPs across United States can be found [here](https://drive.google.com/drive/folders/1Ci7mXguTFOtjgDl0OTZ5oUhmNhh5Iw0R?usp=drive_link).
 
 ## Conclusion <a name="Conclusion"></a>
 
-*This is a placeholder that we hope to fill in with results based on our model and associated inferences. This section aims to reflect the end count of WWTPs within each state based on inference, based on observation, and WWTPs with solar. Additionally, we want to use this section to outline future activities as well as the implications of economic diversity and placement of solar within affluent communities compared to within impoverished communities across the United States.*
+The final step to our project has been verifying the predicted list of WWTPs across the United States that we received from our model inference. This verification was comprised of two steps: 
+
+1) Analyzing the images for WWTPs to determine between the prediction provided from our model was accurate
+AND
+2) Analyzing the images for solar identification
+
+Upon getting the prediction from our model, we proceeded with this verification process and found that across the United States, there are ~6,000 wastewater treatment plants, of which ~200 utilize solar energy to power operations.
+
+<img src="40_docs/figures/OSM_HW_EPA_combined_final_verified.png" width="500" height="300">
+
+Our report conclusion also outlines future activities as well as the implications of economic diversity and placement of solar within affluent communities compared to within impoverished communities across the United States. In doing so, as mentioned within the Introduction, government officials and researchers, like our client Dr. Christine Kirchoff and her team, will now be able to leverage our comprehensive database to understand energy consumption levels pre- and post-solar adoption, potential energy savings, and identifying future potential candidates for adoption of solar energy and answer the desired research question: *What is the scope and scale of solar energy adoption at wastewater treatment plants (WWTPs) in the United States?*
 
 ## Resources <a name="Resources"></a>
 1. [Department of Energy. (n.d.). Wastewater Infrastructure. Energy.gov. Retrieved September 27, 2023](https://www.energy.gov/scep/slsc/wastewater-infrastructure#:~:text=Across%20the%20country%2C%20municipal%20wastewater,billion%20in%20annual%20electric%20costs)<a name="energy-ref"></a>
 2. [Hydrowaste](https://www.hydrosheds.org/products/hydrowaste)<a name="hydrowaste-ref"></a>
 3. [OSM](https://www.openstreetmap.org/)<a name="osm-ref"></a>
+4. [EPA](https://resourcewatch.org/data/explore/wat026rw1-Wastewater-Treatment-Plants-US?section=Discover&selectedCollection=&zoom=3&lat=0&lng=0&pitch=0&bearing=0&basemap=dark&labels=light&layers=%255B%257B%2522dataset%2522%253A%2522a8581e62-63dd-4973-bb2a-b29552ad9e37%2522%252C%2522opacity%2522%253A1%252C%2522layer%2522%253A%2522d1728c21-ebbc-46e3-b3c2-55e47da39d21%2522%257D%255D&aoi=&page=1&sort=most-viewed&sortDirection=-1)<a name="epa-ref"></a>
 
 ## Project Members <a name="Members"></a>
 
